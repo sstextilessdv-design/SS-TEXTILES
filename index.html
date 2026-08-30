@@ -6,8 +6,11 @@
 <title>SS Textiles Gifts | Online Store</title>
 <meta name="description" content="SS Textiles Gifts - Men & Ladies Wear, Sarees, Jewellery, Mobile Accessories and Gifts.">
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
 </head>
 <body>
 <header>
@@ -15,7 +18,8 @@
   <a class="brand" href="#home"><img class="brand-logo" src="logo.png" alt="SS Textiles logo"><div><h1>SS TEXTILES</h1><span>Gifts • Fashion • Accessories</span></div></a>
   <button class="menu" onclick="toggleMenu()">☰</button>
   <div class="links" id="links">
-    <a href="#home">Home</a><a href="#products">Shop</a><a href="#about">About</a><a href="#contact">Contact</a><a href="#admin">Admin</a>
+    <a href="#home">Home</a><a href="#products">Shop</a><a href="#about">About</a><a href="#contact">Contact</a>
+    <span id="authArea"></span>
     <a class="cart-link" href="#cart">🛒 Cart <span id="cartCount">0</span></a>
   </div>
 </nav>
@@ -63,37 +67,30 @@
  </div>
 </section>
 
-<section id="admin" class="section admin">
- <div class="admin-head"><div><p class="eyebrow">STORE MANAGEMENT</p><h2>Product Manager</h2><p class="muted">Online products and orders are stored in your free Supabase database.</p></div><button class="btn primary" onclick="toggleAdmin()">Admin / Add Products</button></div>
- <div id="adminPanel" class="admin-panel" hidden>
-   <div id="adminLoginBox" class="admin-login">
-     <h3>Admin Login</h3>
-     <p class="muted">Use the admin email/password created in Supabase Authentication.</p>
-     <form onsubmit="adminLogin(event)">
-       <input id="adminEmail" type="email" required placeholder="Admin email">
-       <input id="adminPassword" type="password" required placeholder="Password">
-       <button class="btn primary" type="submit">Login</button>
-     </form>
-     <p id="adminMessage" class="tiny"></p>
+<!-- This entire section is hidden by default. It becomes visible ONLY for an admin Google account. -->
+<section id="admin" class="section admin" hidden>
+ <div class="admin-head">
+  <div><p class="eyebrow">STORE MANAGEMENT</p><h2>Product Manager</h2><p class="muted">Admin access is restricted to the Google account configured in firebase-config.js.</p></div>
+ </div>
+ <div class="admin-panel">
+   <div class="admin-toolbar">
+     <div><b id="adminUser"></b><p class="muted">You can add, edit or delete products.</p></div>
+     <button class="btn outline" onclick="signOutGoogle()">Sign Out</button>
    </div>
-   <div id="adminManager" hidden>
-     <div class="admin-toolbar"><div><b id="adminUser"></b><p class="muted">Only signed-in admin can add, edit or delete products.</p></div><button class="btn outline" onclick="adminLogout()">Logout</button></div>
-     <div class="admin-columns">
-       <div>
-        <h3>Add / Edit Product</h3>
-        <form id="productForm" onsubmit="saveProduct(event)">
-         <input type="hidden" id="editId">
-         <label>Product Name<input id="pName" required placeholder="e.g. Cotton Shirt"></label>
-         <label>Category<select id="pCategory" required><option>Men's Wear</option><option>Ladies Wear</option><option>Sarees</option><option>Jewellery</option><option>Mobile Accessories</option><option>Gifts</option></select></label>
-         <label>Price (₹)<input id="pPrice" type="number" min="0" step="1" required placeholder="Enter your price"></label>
-         <label>Image<input id="pImage" type="file" accept="image/*"></label>
-         <label>Description<textarea id="pDesc" rows="3" placeholder="Short product description"></textarea></label>
-         <div class="form-actions"><button class="btn primary" type="submit">Save Product Online</button><button class="btn outline" type="button" onclick="resetForm()">Clear</button></div>
-        </form>
-       </div>
-       <div><h3>Online Products</h3><div id="adminProducts"></div></div>
+   <div class="admin-columns">
+     <div>
+      <h3 id="formTitle">Add Product</h3>
+      <form id="productForm" onsubmit="saveProduct(event)">
+       <input type="hidden" id="editId">
+       <label>Product Name<input id="pName" required placeholder="e.g. Cotton Shirt"></label>
+       <label>Category<select id="pCategory" required><option>Men's Wear</option><option>Ladies Wear</option><option>Sarees</option><option>Jewellery</option><option>Mobile Accessories</option><option>Gifts</option></select></label>
+       <label>Price (₹)<input id="pPrice" type="number" min="0" step="1" required placeholder="Enter your price"></label>
+       <label>Image<input id="pImage" type="file" accept="image/*"></label>
+       <label>Description<textarea id="pDesc" rows="3" placeholder="Short product description"></textarea></label>
+       <div class="form-actions"><button class="btn primary" type="submit">Save Product</button><button class="btn outline" type="button" onclick="resetForm()">Clear</button></div>
+      </form>
      </div>
-     <div class="orders-box"><h3>Customer Orders</h3><div id="adminOrders"></div></div>
+     <div><h3>Products</h3><div id="adminProducts"></div></div>
    </div>
  </div>
 </section>
@@ -107,11 +104,10 @@
    <textarea id="cAddress" required rows="4" placeholder="Delivery address"></textarea>
    <button class="btn primary full" type="submit">Confirm Order & Send to WhatsApp</button>
   </form>
-  <p class="muted tiny">Your order is saved online and WhatsApp will open with the product list and total.</p>
  </div>
 </div>
 
-<footer><p>© <span id="year"></span> SS Textiles. All Rights Reserved.</p><a href="#admin">Admin</a></footer>
+<footer><p>© <span id="year"></span> SS Textiles. All Rights Reserved.</p><span id="footerAuth"></span></footer>
 <script src="script.js"></script>
 </body>
 </html>

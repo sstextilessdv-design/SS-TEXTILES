@@ -1,0 +1,132 @@
+SS TEXTILES GIFTS — FIREBASE GOOGLE LOGIN + ADMIN PRODUCT ACCESS
+================================================================
+
+This version uses Firebase for:
+- Google Sign-In
+- Product database (Cloud Firestore)
+- Product image uploads (Firebase Storage)
+
+CUSTOMER:
+- Can browse products and use cart/WhatsApp ordering.
+- If they sign in with Google, they still remain a CUSTOMER unless their
+  Google email is the configured admin email.
+- They will NOT see the Product Manager section.
+- They will NOT see Add Product, Edit Product or Delete Product controls.
+
+ADMIN:
+- Only the Google email listed in firebase-config.js can manage products.
+- Admin sees Add Product, Edit Product and Delete Product.
+- Firestore and Storage Rules enforce this on the server side too.
+  Hiding buttons alone is NOT the security mechanism.
+
+------------------------------------------------------------
+STEP 1 — CREATE FIREBASE PROJECT
+------------------------------------------------------------
+1. Open Firebase Console: https://console.firebase.google.com/
+2. Create a new project.
+3. Open Project settings -> General -> Your apps.
+4. Click the Web app icon (</>) and register the website.
+5. Copy the Firebase Web App configuration.
+
+Open firebase-config.js and replace all PASTE_YOUR_* values.
+
+------------------------------------------------------------
+STEP 2 — CHOOSE YOUR ADMIN GOOGLE ACCOUNT
+------------------------------------------------------------
+In firebase-config.js change:
+
+ADMIN_EMAILS: ["YOUR_ADMIN_GOOGLE_EMAIL@gmail.com"]
+
+to your real Google account, for example:
+
+ADMIN_EMAILS: ["yourname@gmail.com"]
+
+Use the exact same email in firestore.rules and storage.rules.
+
+IMPORTANT:
+The admin email is the Google account that will see the product manager.
+Do NOT put a customer email there.
+
+------------------------------------------------------------
+STEP 3 — ENABLE GOOGLE SIGN-IN
+------------------------------------------------------------
+Firebase Console:
+Authentication -> Sign-in method -> Google -> Enable -> Save.
+
+Google sign-in is the only provider used by this website.
+
+------------------------------------------------------------
+STEP 4 — CREATE FIRESTORE DATABASE
+------------------------------------------------------------
+Firebase Console:
+Build -> Firestore Database -> Create database.
+
+Choose a location and create the database.
+
+Then open Firestore -> Rules and replace the rules with the content
+from firestore.rules.
+
+Replace:
+YOUR_ADMIN_GOOGLE_EMAIL@gmail.com
+
+with your real admin Google email before publishing.
+
+------------------------------------------------------------
+STEP 5 — ENABLE FIREBASE STORAGE
+------------------------------------------------------------
+Firebase Console:
+Build -> Storage -> Get started.
+
+Then open Storage -> Rules and replace the rules with storage.rules.
+
+Again replace the placeholder admin email with your real admin email.
+
+------------------------------------------------------------
+STEP 6 — AUTHORIZE YOUR WEBSITE DOMAIN
+------------------------------------------------------------
+For local testing:
+- Use a local web server, not file:// when possible.
+
+For Google login after publishing:
+Firebase Console -> Authentication -> Settings -> Authorized domains
+Add your website domain.
+
+If using Firebase Hosting, the Firebase domain is normally already
+authorized.
+
+------------------------------------------------------------
+STEP 7 — TEST
+------------------------------------------------------------
+1. Publish/open the website.
+2. Click "Sign in with Google".
+3. Sign in using the admin Google account.
+4. The "Product Manager" section should appear.
+5. Add a product with your own price.
+6. Edit and delete products.
+7. Sign out.
+8. Sign in using a different Google account.
+9. That account should only see the customer shop/cart and must NOT see
+   the Product Manager.
+
+------------------------------------------------------------
+IMPORTANT SECURITY NOTE
+------------------------------------------------------------
+The admin email appears in frontend configuration, but that is okay:
+the real protection is Firestore Rules + Storage Rules. A customer cannot
+write/delete products simply by changing the page JavaScript because
+Firebase rejects unauthorized writes.
+
+Do not use Firebase Admin SDK credentials, service-account JSON files,
+private keys, or passwords in this website.
+
+------------------------------------------------------------
+EXISTING SUPABASE VERSION
+------------------------------------------------------------
+The previous ZIP used Supabase Authentication and Supabase products.
+This new version changes PRODUCT authentication/database to Firebase so
+Google Sign-In and server-side admin rules work together.
+
+Your old Supabase product data is not automatically copied into Firestore.
+If you already have products in Supabase, they can be migrated separately.
+
+Orders are sent directly to your WhatsApp number in this version.

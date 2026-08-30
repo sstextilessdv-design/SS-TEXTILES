@@ -10,3 +10,12 @@ header{position:sticky;top:0;z-index:20;background:rgba(8,8,9,.96);border-bottom
 
 /* Keep checkout completely hidden until Confirm Order is clicked. */
 .modal[hidden]{display:none !important}
+
+/* Firebase Google authentication */
+.auth-btn{
+  background:none;border:1px solid #4a3a1d;color:#e2bd63;padding:8px 12px;
+  border-radius:8px;cursor:pointer;font:inherit;
+}
+.user-chip{color:#d7c99f;font-size:13px;margin-right:6px}
+#authArea{display:flex;align-items:center;gap:8px}
+footer #footerAuth{display:block;margin-top:6px}

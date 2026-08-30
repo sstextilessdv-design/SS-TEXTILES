@@ -1,7 +1,20 @@
-SS TEXTILES GIFTS - ONLINE STORE
+SS TEXTILES GIFTS — Firebase Google Sign-In Edition
 
-Product prices are NOT pre-set. Use Product Manager to add as many products as you want and enter your own price for every product.
+This website is configured so:
+- Public customers can view products.
+- Google Sign-In is available.
+- Only the configured admin Google account can see Product Manager.
+- Only that admin can Add / Edit / Delete products.
+- Firestore Rules and Storage Rules enforce the same restriction.
 
-Customer flow: select products -> cart -> Confirm Order -> name/phone/address -> WhatsApp.
+Read FIREBASE_SETUP.txt before publishing.
 
-For online sync, configure Supabase using SETUP_SUPABASE.txt and supabase_setup.sql.
+Files:
+- index.html
+- script.js
+- style.css
+- firebase-config.js       <-- add your Firebase config + admin email
+- firestore.rules          <-- secure Firestore product access
+- storage.rules             <-- secure product image access
+- FIREBASE_SETUP.txt        <-- step-by-step Firebase setup
+- logo.png
