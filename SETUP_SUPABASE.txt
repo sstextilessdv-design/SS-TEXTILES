@@ -1,0 +1,25 @@
+SS TEXTILES GIFTS - FREE ONLINE DATABASE SETUP
+
+This version is ready for Supabase. Supabase's Free plan currently includes a Postgres database, 500 MB database size, 1 GB file storage and 2 free projects (subject to the provider's current limits). It is enough for a small shop website.
+
+1. Create a free Supabase account/project.
+2. Open the Supabase project -> SQL Editor.
+3. Open the included file: supabase_setup.sql
+4. Copy everything into SQL Editor and click Run.
+5. In Supabase -> Authentication -> Users, create the shop admin user using the email/password you want for Product Manager.
+6. Open Supabase -> Project Settings -> API.
+7. Copy the Project URL and the Publishable/Anon key.
+8. Open supabase-config.js and replace:
+   PASTE_YOUR_SUPABASE_PROJECT_URL
+   PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY
+9. Save the file and upload the whole website folder/ZIP to your hosting.
+
+After this:
+- Products are stored online and visible to every customer.
+- Product images are stored in Supabase Storage.
+- Customers can place orders; the order is saved online and WhatsApp opens with the order details.
+- Admin Product Manager requires the Supabase admin email/password.
+- Orders can be viewed from the Product Manager after admin login.
+
+IMPORTANT SECURITY NOTE:
+Only use the Publishable/Anon key in the website. Never put a Supabase service_role/secret key in HTML or JavaScript.
