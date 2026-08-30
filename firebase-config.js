@@ -9,12 +9,12 @@
 // Firestore/Storage Rules provide the real security.
 
 window.FIREBASE_CONFIG = {
-  apiKey: "firebase init",
-  authDomain: "firebase init.firebaseapp.com",
-  projectId: "firebase init",
-  storageBucket: "firebase init.firebasestorage.app",
-  messagingSenderId: "firebase init",
-  appId: ""
+  apiKey: "AIzaSyC3PsX2b0ip_4-8Br5uUCjmiY2zykbIWXw",
+  authDomain: "ss-textiles.firebaseapp.com",
+  projectId: "ss-textiles",
+  storageBucket: "ss-textiles.firebasestorage.app",
+  messagingSenderId: "1087300192273",
+  appId: "1:1087300192273:web:ad4f235f44d85af39609b0"
 };
 
 window.STORE_ACCESS = {
