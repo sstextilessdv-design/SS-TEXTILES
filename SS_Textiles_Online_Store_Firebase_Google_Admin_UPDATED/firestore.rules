@@ -1,0 +1,22 @@
+// firestore.rules
+// Replace YOUR_ADMIN_GOOGLE_EMAIL@gmail.com with the SAME email used in firebase-config.js.
+//
+// Customers: can read products.
+// Admin Google account: can add, edit and delete products.
+// Everyone else: read-only.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /products/{productId} {
+      allow read: if true;
+
+      allow create, update, delete:
+        if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email == "YOUR_ADMIN_GOOGLE_EMAIL@gmail.com";
+    }
+  }
+}
