@@ -9,14 +9,16 @@
 // Firestore/Storage Rules provide the real security.
 
 window.FIREBASE_CONFIG = {
-  apiKey: "YOUR_ACTUAL_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+const firebaseConfig = {
+  apiKey: "AIzaSyC3PsX2b0ip_4-8Br5uUCjmiY2zykbIWXw",
+  authDomain: "ss-textiles.firebaseapp.com",
+  projectId: "ss-textiles",
+  storageBucket: "ss-textiles.firebasestorage.app",
+  messagingSenderId: "1087300192273",
+  appId: "1:1087300192273:web:ad4f235f44d85af39609b0",
+  measurementId: "G-BY1D99852C"
 };
 
 window.STORE_ACCESS = {
-  ADMIN_EMAILS: ["YOUR_ADMIN_GMAIL@gmail.com"]
+  ADMIN_EMAILS: ["sstextilessdv@gmail.com"]
 };
